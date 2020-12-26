@@ -34,4 +34,9 @@ struct tco_shmem_data_control
     } steering;
 };
 
+/* Shared memory array constructors */
+#define TCO_SHMEM_ARR_NAME {TCO_SHMEM_NAME_MODEL, TCO_SHMEM_NAME_CONTROL};
+#define TCO_SHMEM_ARR_SEM_NAME {TCO_SHMEM_NAME_SEM_MODEL, TCO_SHMEM_NAME_SEM_CONTROL};
+#define TCO_SHMEM_ARR_SIZE {sizeof(struct tco_shmem_data_model), sizeof(struct tco_shmem_data_control)};
+
 #endif /* _TCO_SHMEM_H_ */
