@@ -13,8 +13,9 @@ server.
 #define TCO_SHMEM_NAME_SEM_MODEL "tco_shmem_sem_model"
 struct tco_shmem_data_model
 {
-    uint32_t mem_size;
+    uint8_t valid; /* =0 means shared memory is invalid, >0 means valid */
 };
+#define TCO_SHMEM_SIZE_MODEL sizeof(struct tco_shmem_data_model)
 
 /* 
 Store output of the control server any any related data needed by the io
@@ -24,19 +25,29 @@ server to control the hardware.
 #define TCO_SHMEM_NAME_SEM_CONTROL "tco_shmem_sem_control"
 struct tco_shmem_data_control
 {
-    uint32_t mem_size;
+    uint8_t valid; /* =0 means shared memory is invalid, >0 means valid */
     struct
     {
+        uint8_t active; /* =0 means inactive, >0 active */
         uint16_t pulse_len_min;
         uint16_t pulse_len_max;
-        uint8_t ch;
-        float turn_frac;
-    } steering;
+        float pulse_frac;
+    } ch[16];
 };
+#define TCO_SHMEM_SIZE_CONTROL sizeof(struct tco_shmem_data_control)
 
 /* Shared memory array constructors */
-#define TCO_SHMEM_ARR_NAME {TCO_SHMEM_NAME_MODEL, TCO_SHMEM_NAME_CONTROL};
-#define TCO_SHMEM_ARR_SEM_NAME {TCO_SHMEM_NAME_SEM_MODEL, TCO_SHMEM_NAME_SEM_CONTROL};
-#define TCO_SHMEM_ARR_SIZE {sizeof(struct tco_shmem_data_model), sizeof(struct tco_shmem_data_control)};
+#define TCO_SHMEM_ARR_NAME                           \
+    {                                                \
+        TCO_SHMEM_NAME_MODEL, TCO_SHMEM_NAME_CONTROL \
+    }
+#define TCO_SHMEM_ARR_SEM_NAME                               \
+    {                                                        \
+        TCO_SHMEM_NAME_SEM_MODEL, TCO_SHMEM_NAME_SEM_CONTROL \
+    }
+#define TCO_SHMEM_ARR_SIZE                           \
+    {                                                \
+        TCO_SHMEM_SIZE_MODEL, TCO_SHMEM_SIZE_CONTROL \
+    }
 
 #endif /* _TCO_SHMEM_H_ */
