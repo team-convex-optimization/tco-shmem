@@ -29,8 +29,6 @@ struct tco_shmem_data_control
     struct
     {
         uint8_t active; /* =0 means inactive, >0 active */
-        uint16_t pulse_len_min;
-        uint16_t pulse_len_max;
         float pulse_frac;
     } ch[16];
 };
