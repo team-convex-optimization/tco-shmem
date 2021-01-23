@@ -20,7 +20,7 @@ struct tco_shmem_data_control
         uint8_t active; /* =0 means inactive, >0 active */
         float pulse_frac;
     } ch[16];
-};
+} __attribute__((packed));
 #define TCO_SHMEM_SIZE_CONTROL sizeof(struct tco_shmem_data_control)
 
 /* Shared memory array constructors */
