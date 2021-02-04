@@ -32,12 +32,10 @@ Store state of the simulated car. This is only used when training hence the ifde
 struct tco_shmem_data_training
 {
     uint8_t valid;                                /* =0 means shared memory is invalid, >0 means valid */
-    uint8_t reset;                                /* 1 = Simulator is requested to reset. Agent will wait until this is returned back to 0. */
+    uint8_t state;                                /* =0 means simulator is paused. =1 means request to step once. =2 means request to hard reset. Gym will wait until this is returned back to 0 before proceeding. */
     uint8_t wheels_off_track[4];                  /* [0] = FL, [1] = FR, [2] = RL, [3] = RR */
     uint8_t drifting;                             /* =0 when not drifting and >0 when drifting */
-    float speed;                                  /* Godot units per frame */
-    float steer;                                  /* Simulator will steer by fraction. Range should be 0 to 1, 0 is full left, 1 is full right. */
-    float motor;                                  /* Simulator will throttle by this fraction. Range should be 0 to 1, 0 is full reverse, 1 is full forward. */
+    float speed;                                  /* meters per second */
     float pos[3];                                 /* [0] = x, [1] = y, [2] = z */
     uint8_t video[TCO_SIM_HEIGHT][TCO_SIM_WIDTH]; /* Grayscale camera feed from the simulator */
 } __attribute__((packed));
@@ -74,6 +72,6 @@ struct tco_shmem_data_training
     {                           \
         TCO_SHMEM_SIZE_CONTROL, \
     }
-#endif /* Training */
+#endif /* TRAINING */
 
 #endif /* _TCO_SHMEM_H_ */
