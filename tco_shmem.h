@@ -25,8 +25,8 @@ struct tco_shmem_data_control
 /*
 Store state of the simulated car. This is only used when training hence the ifdef.
 */
-#define TCO_SIM_WIDTH 32
-#define TCO_SIM_HEIGHT 18
+#define TCO_SIM_WIDTH 640
+#define TCO_SIM_HEIGHT 480
 #define TCO_SHMEM_NAME_TRAINING "tco_shmem_training"
 #define TCO_SHMEM_NAME_SEM_TRAINING "tco_shmem_sem_training"
 struct tco_shmem_data_training
