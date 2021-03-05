@@ -18,7 +18,7 @@ struct tco_shmem_data_control
         uint8_t active; /* =0 means inactive, >0 active */
         float pulse_frac;
     } ch[16];
-} __attribute__((packed));
+};
 #define TCO_SHMEM_SIZE_CONTROL sizeof(struct tco_shmem_data_control)
 
 #ifdef TRAINING
@@ -38,7 +38,7 @@ struct tco_shmem_data_training
     float speed;                                  /* meters per second */
     float pos[3];                                 /* [0] = x, [1] = y, [2] = z */
     uint8_t video[TCO_SIM_HEIGHT][TCO_SIM_WIDTH]; /* Grayscale camera feed from the simulator */
-} __attribute__((packed));
+};
 #define TCO_SHMEM_SIZE_TRAINING sizeof(struct tco_shmem_data_training)
 #endif /* TRAINING */
 
