@@ -16,6 +16,7 @@ struct tco_shmem_data_plan
 {
     _Alignas(1) uint8_t valid;                         /* =0 means shared memory is invalid, >0 means valid */
     _Alignas(4) uint16_t waypts[TCO_PLAN_WAYPTS_N][2]; /* Each element contains x and y coordiantes of the waypoint on a frame */
+    _Alignas(4) uint32_t frame_id;
 };
 #define TCO_SHMEM_SIZE_PLAN sizeof(struct tco_shmem_data_plan)
 
