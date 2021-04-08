@@ -13,9 +13,9 @@ control daemon.
 #define TCO_SHMEM_NAME_SEM_PLAN "tco_shmem_sem_plan"
 struct tco_shmem_data_plan
 {
-    _Alignas(4) float target; /* Desired position. -1 left edge of frame, 1 right edge of frame, 0 is center.  */
+    _Alignas(4) float target_pos;   /* Desired position. -1 left edge of frame, 1 right edge of frame, 0 is center.  */
+    _Alignas(4) float target_speed; /* Desired speed in meters per second. */
     _Alignas(4) uint32_t frame_id;
-    _Alignas(1) uint8_t valid; /* =0 means shared memory is invalid, >0 means valid */
 };
 #define TCO_SHMEM_SIZE_PLAN sizeof(struct tco_shmem_data_plan)
 
@@ -32,66 +32,45 @@ struct tco_shmem_data_control
         _Alignas(4) float pulse_frac;
         _Alignas(1) uint8_t active; /* =0 means inactive, >0 active */
     } ch[16];
-    _Alignas(1) uint8_t valid;     /* =0 means shared memory is invalid, >0 means valid */
     _Alignas(1) uint8_t emergency; /* =0 mean no emergency, >1 means there is an emergency */
 };
 #define TCO_SHMEM_SIZE_CONTROL sizeof(struct tco_shmem_data_control)
 
-#ifdef TRAINING
 /*
-Store state of the simulated car. This is only used when training hence the ifdef.
+Store state of the car.
 */
-#define TCO_SHMEM_NAME_TRAINING "tco_shmem_training"
-#define TCO_SHMEM_NAME_SEM_TRAINING "tco_shmem_sem_training"
-struct tco_shmem_data_training
+#define TCO_SHMEM_NAME_STATE "tco_shmem_state"
+#define TCO_SHMEM_NAME_SEM_STATE "tco_shmem_sem_state"
+struct tco_shmem_data_state
 {
-    _Alignas(4) float speed;                                      /* meters per second */
-    _Alignas(4) float pos[3];                                     /* [0] = x, [1] = y, [2] = z */
+    _Alignas(4) uint32_t frame_id;
+    _Alignas(4) float speed;                                      /* Meters per second */
     _Alignas(4) uint8_t wheels_off_track[4];                      /* [0] = FL, [1] = FR, [2] = RL, [3] = RR */
-    _Alignas(4) uint8_t video[TCO_FRAME_HEIGHT][TCO_FRAME_WIDTH]; /* Grayscale camera feed from the simulator */
-    _Alignas(1) uint8_t valid;                                    /* =0 means shared memory is invalid, >0 means valid */
-    _Alignas(1) uint8_t state;                                    /* =0 means simulator is paused. =1 means request to step once. =2 means request to hard reset. Gym will wait until this is returned back to 0 before proceeding. */
+    _Alignas(4) uint8_t frame[TCO_FRAME_HEIGHT][TCO_FRAME_WIDTH]; /* Grayscale camera feed */
+    _Alignas(4) float pos[3];                                     /* [0] = x, [1] = y, [2] = z */
     _Alignas(1) uint8_t drifting;                                 /* =0 when not drifting and >0 when drifting */
+    _Alignas(1) uint8_t state_sim;                                /* =0 means simulator is paused. =1 means request to step once. =2 means request to hard reset. Gym will wait until this is returned back to 0 before proceeding. */
 };
-#define TCO_SHMEM_SIZE_TRAINING sizeof(struct tco_shmem_data_training)
-#endif /* TRAINING */
+#define TCO_SHMEM_SIZE_STATE sizeof(struct tco_shmem_data_state)
 
 /* Shared memory array constructors */
-#ifdef TRAINING
-#define TCO_SHMEM_ARR_NAME           \
-    {                                \
-        TCO_SHMEM_NAME_CONTROL,      \
-            TCO_SHMEM_NAME_TRAINING, \
-            TCO_SHMEM_NAME_PLAN      \
+#define TCO_SHMEM_ARR_NAME        \
+    {                             \
+        TCO_SHMEM_NAME_CONTROL,   \
+            TCO_SHMEM_NAME_STATE, \
+            TCO_SHMEM_NAME_PLAN   \
     }
-#define TCO_SHMEM_ARR_SEM_NAME           \
-    {                                    \
-        TCO_SHMEM_NAME_SEM_CONTROL,      \
-            TCO_SHMEM_NAME_SEM_TRAINING, \
-            TCO_SHMEM_NAME_SEM_PLAN      \
+#define TCO_SHMEM_ARR_SEM_NAME        \
+    {                                 \
+        TCO_SHMEM_NAME_SEM_CONTROL,   \
+            TCO_SHMEM_NAME_SEM_STATE, \
+            TCO_SHMEM_NAME_SEM_PLAN   \
     }
-#define TCO_SHMEM_ARR_SIZE           \
-    {                                \
-        TCO_SHMEM_SIZE_CONTROL,      \
-            TCO_SHMEM_SIZE_TRAINING, \
-            TCO_SHMEM_SIZE_PLAN      \
+#define TCO_SHMEM_ARR_SIZE        \
+    {                             \
+        TCO_SHMEM_SIZE_CONTROL,   \
+            TCO_SHMEM_SIZE_STATE, \
+            TCO_SHMEM_SIZE_PLAN   \
     }
-#else
-#define TCO_SHMEM_ARR_NAME      \
-    {                           \
-        TCO_SHMEM_NAME_CONTROL, \
-            TCO_SHMEM_NAME_PLAN \
-    }
-#define TCO_SHMEM_ARR_SEM_NAME      \
-    {                               \
-        TCO_SHMEM_NAME_SEM_CONTROL, \
-            TCO_SHMEM_NAME_SEM_PLAN \
-    }
-#define TCO_SHMEM_ARR_SIZE      \
-    {                           \
-        TCO_SHMEM_SIZE_CONTROL, \
-            TCO_SHMEM_SIZE_PLAN \
-    }
-#endif /* TRAINING */
 
 #endif /* _TCO_SHMEM_H_ */
