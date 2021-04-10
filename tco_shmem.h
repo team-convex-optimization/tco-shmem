@@ -2,8 +2,8 @@
 #define _TCO_SHMEM_H_
 
 #include <stdint.h>
-#define TCO_FRAME_WIDTH 640U
-#define TCO_FRAME_HEIGHT 480U
+#define TCO_FRAME_WIDTH 316U
+#define TCO_FRAME_HEIGHT 208U
 
 /* 
 Store output of the plan daemon which is a description of the desired path to be taken by the
