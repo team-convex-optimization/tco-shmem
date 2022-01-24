@@ -16,6 +16,9 @@ struct tco_shmem_data_plan
     _Alignas(4) float target_pos;   /* Desired position. -1 left edge of frame, 1 right edge of frame, 0 is center.  */
     _Alignas(4) float target_speed; /* Desired speed in meters per second. */
     _Alignas(4) uint32_t frame_id;
+    _Alignas(8) double ultrasound_left;
+    _Alignas(8) double ultrasound_right;
+    _Alignas(8) double hall_effect_rpm;
 };
 #define TCO_SHMEM_SIZE_PLAN sizeof(struct tco_shmem_data_plan)
 
