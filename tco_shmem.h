@@ -15,6 +15,7 @@ struct tco_shmem_data_plan
 {
     _Alignas(4) float target_pos;   /* Desired position. -1 left edge of frame, 1 right edge of frame, 0 is center.  */
     _Alignas(4) float target_speed; /* Desired speed in meters per second. */
+    _Alignas(1) uint8_t lap_of_honor; /* Set to 1 once the finish line is detected */
     _Alignas(4) uint32_t frame_id;
 };
 #define TCO_SHMEM_SIZE_PLAN sizeof(struct tco_shmem_data_plan)
