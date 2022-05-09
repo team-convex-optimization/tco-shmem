@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 #define TCO_FRAME_WIDTH 640U
-#define TCO_FRAME_HEIGHT 280U
+#define TCO_FRAME_HEIGHT 220U
 
 /*
 Store output of the plan daemon which is a description of the desired path to be taken by the
